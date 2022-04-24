@@ -8,6 +8,9 @@ class UsersHandler {
     }
 
     async postUserHandler(request, h) {
+        /**
+         * @type {AddUserUseCase}
+         */
         const addUserUseCase = this._container.getInstance(
             AddUserUseCase.name,
         );

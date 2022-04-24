@@ -1,35 +1,61 @@
-// {
-//     "id": "thread-h_2FkLZhtgBKY2kh4CC02",
-//     "title": "sebuah thread",
-//     "body": "sebuah body thread",
-//     "date": "2021-08-08T07:19:09.775Z",
-//     "username": "dicoding",
-//     "comments": [
-//         {
-//             "id": "comment-_pby2_tmXV6bcvcdev8xk",
-//             "username": "johndoe",
-//             "date": "2021-08-08T07:22:33.555Z",
-//             "content": "sebuah comment"
-//         },
-//         {
-//             "id": "comment-yksuCoxM2s4MMrZJO-qVD",
-//             "username": "dicoding",
-//             "date": "2021-08-08T07:26:21.338Z",
-//             "content": "**komentar telah dihapus**"
-//         }
-//     ]
-// }
+const Thread = require('../Thread');
 
-describe("CreatedThread entities", () => {
-    it("should create createdThread object correctly", () => {
+describe('CreatedThread entities', () => {
+    it('should create createdThread object correctly', () => {
         // Arrange
         const payload = {
-            id: "id",
-            title: "title",
-            body: "body",
-            date: "date",
-            username: "username",
+            id: 'id',
+            title: 'title',
+            body: 'body',
+            date: new Date(),
+            username: 'username',
             comments: [],
         };
+
+        // Act
+        const createdThread = new Thread(payload);
+
+        // Assert
+        expect(createdThread.id).toEqual(payload.id);
+        expect(createdThread.title).toEqual(payload.title);
+        expect(createdThread.body).toEqual(payload.body);
+        expect(createdThread.date).toEqual(
+            payload.date.toISOString(),
+        );
+        expect(createdThread.username).toEqual(payload.username);
+        expect(createdThread.comments).toEqual(payload.comments);
+    });
+
+    it('should throw error when payload not contain needed property', () => {
+        // Arrange
+        const payload = {
+            id: 'id',
+            title: 'title',
+            body: 'body',
+            date: new Date(),
+            username: 'username',
+        };
+
+        // Act & Assert
+        expect(() => new Thread(payload)).toThrowError(
+            'THREAD.NOT_CONTAIN_NEEDED_PROPERTY',
+        );
+    });
+
+    it('should throw error when payload not meet data type specification', () => {
+        // Arrange
+        const payload = {
+            id: 'id',
+            title: 1,
+            body: 1,
+            date: 1,
+            username: 1,
+            comments: [],
+        };
+
+        // Act & Assert
+        expect(() => new Thread(payload)).toThrowError(
+            'THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION',
+        );
     });
 });
