@@ -1,3 +1,5 @@
+const InvariantError = require('../../../Commons/exceptions/InvariantError');
+
 class Comment {
     /**
      * @param {Object} payload
@@ -36,7 +38,9 @@ class Comment {
             !payload.date ||
             !payload.username
         ) {
-            throw new Error('COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
+            throw new InvariantError(
+                'COMMENT.NOT_CONTAIN_NEEDED_PROPERTY',
+            );
         }
 
         if (
@@ -45,13 +49,13 @@ class Comment {
             !payload instanceof Date ||
             typeof payload.username !== 'string'
         ) {
-            throw new Error(
+            throw new InvariantError(
                 'COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION',
             );
         }
 
         if (payload.replies && !Array.isArray(payload.replies)) {
-            throw new Error(
+            throw new InvariantError(
                 'COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION',
             );
         }

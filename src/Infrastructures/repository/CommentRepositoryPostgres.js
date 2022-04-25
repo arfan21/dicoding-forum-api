@@ -76,7 +76,7 @@ class CommentRepositoryPostgres extends CommentRepository {
      */
     async verifyCommentExists(id) {
         const query = {
-            text: 'SELECT * FROM comments J WHERE id = $1',
+            text: 'SELECT * FROM comments WHERE id = $1',
             values: [id],
         };
 

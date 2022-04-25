@@ -306,7 +306,7 @@ describe('ThreadRepositoryPostgres', () => {
                                 new Comment({
                                     id: 'comment-1234',
                                     content:
-                                        '**komentar telah dihapus**',
+                                        '**balasan telah dihapus**',
                                     date: new Date(
                                         existThread?.[0]?.comments?.[0]?.replies?.[0]?.date,
                                     ),

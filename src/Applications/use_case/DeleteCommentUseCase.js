@@ -1,5 +1,6 @@
 const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
 const CommentRepository = require('../../Domains/comments/CommentRepository');
+const ThreadRepository = require('../../Domains/threads/ThreadRepository');
 
 class DeleteCommentUseCase {
     /**
@@ -22,13 +23,26 @@ class DeleteCommentUseCase {
     async execute(id, owner) {
         const result =
             await this._commentRepository.verifyCommentExists(id);
-        if (result.owner !== owner) {
-            throw new AuthorizationError('anda tidak memiliki akses');
+        const { owner: ownerFromDb } = result;
+        // verify parent comment
+        if (result.reply_to) {
+            await this._commentRepository.verifyCommentExists(
+                result.reply_to,
+            );
         }
+
+        this._validateOwner(ownerFromDb, owner);
+
         await this._threadRepository.verifyThreadExists(
             result.thread,
         );
         await this._commentRepository.deleteComment(id);
+    }
+
+    _validateOwner(ownerFromDb, owner) {
+        if (ownerFromDb !== owner) {
+            throw new AuthorizationError('anda tidak memiliki akses');
+        }
     }
 }
 

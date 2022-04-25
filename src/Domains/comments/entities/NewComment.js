@@ -1,3 +1,5 @@
+const InvariantError = require('../../../Commons/exceptions/InvariantError');
+
 class NewComment {
     /**
      * @param {Object} payload
@@ -23,7 +25,7 @@ class NewComment {
      */
     _verifyPayload(payload) {
         if (!payload.content || !payload.owner || !payload.thread) {
-            throw new Error(
+            throw new InvariantError(
                 'NEW_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY',
             );
         }
@@ -33,7 +35,7 @@ class NewComment {
             typeof payload.owner !== 'string' ||
             typeof payload.thread !== 'string'
         ) {
-            throw new Error(
+            throw new InvariantError(
                 'NEW_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION',
             );
         }
@@ -42,7 +44,7 @@ class NewComment {
             payload.reply_to &&
             typeof payload.reply_to !== 'string'
         ) {
-            throw new Error(
+            throw new InvariantError(
                 'NEW_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION',
             );
         }

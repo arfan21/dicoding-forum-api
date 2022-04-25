@@ -133,4 +133,106 @@ describe('DeleteCommentUseCase', () => {
             mockCommentRepository.verifyCommentExists,
         ).toBeCalledWith(useCasePayload);
     });
+
+    it('should orchestrating the delete reply action correctly', async () => {
+        // Arrange
+        const useCasePayload = 'reply-123';
+        const owner = 'user-123-reply';
+        /** creating dependency of use case */
+        const mockCommentRepository = new CommentRepository();
+        const mockThreadRepository = new ThreadRepository();
+
+        /** mocking needed function */
+        mockCommentRepository.deleteComment = jest
+            .fn()
+            .mockImplementation(() => Promise.resolve());
+
+        mockCommentRepository.verifyCommentExists = jest
+            .fn()
+            .mockReturnValueOnce(
+                Promise.resolve({
+                    id: 'reply-123',
+                    thread: 'thread-123',
+                    content: 'asd',
+                    owner: owner,
+                    reply_to: 'comment-123',
+                    deleted_at: null,
+                    date: new Date(),
+                }),
+            )
+            .mockReturnValueOnce(
+                Promise.resolve({
+                    id: 'comment-123',
+                    thread: 'thread-123',
+                    content: 'qweqwe',
+                    owner: 'user-123',
+                    reply_to: null,
+                    deleted_at: null,
+                    date: new Date(),
+                }),
+            );
+
+        mockThreadRepository.verifyThreadExists = jest
+            .fn()
+            .mockImplementation(() => Promise.resolve());
+
+        /** creating use case instance */
+        const deleteCommentUseCase = new DeleteCommentUseCase({
+            commentRepository: mockCommentRepository,
+            threadRepository: mockThreadRepository,
+        });
+
+        // Action & Assert
+        await expect(
+            deleteCommentUseCase.execute(useCasePayload, owner),
+        ).resolves.toBeUndefined();
+
+        expect(mockCommentRepository.deleteComment).toBeCalledWith(
+            useCasePayload,
+        );
+        expect(
+            mockCommentRepository.verifyCommentExists,
+        ).toHaveBeenNthCalledWith(1, useCasePayload);
+        expect(
+            mockCommentRepository.verifyCommentExists,
+        ).toHaveBeenNthCalledWith(2, 'comment-123');
+        expect(
+            mockThreadRepository.verifyThreadExists,
+        ).toBeCalledWith('thread-123');
+    });
+
+    it('should throw an error when the reply is not found', async () => {
+        // Arrange
+        const useCasePayload = 'reply-123';
+        const owner = 'user-123-reply';
+        /** creating dependency of use case */
+        const mockCommentRepository = new CommentRepository();
+        const mockThreadRepository = new ThreadRepository();
+
+        /** mocking needed function */
+        mockCommentRepository.deleteComment = jest
+            .fn()
+            .mockImplementation(() => Promise.resolve());
+
+        mockCommentRepository.verifyCommentExists = jest
+            .fn()
+            .mockImplementation(() =>
+                Promise.reject(new NotFoundError('Not found')),
+            );
+
+        /** creating use case instance */
+        const deleteCommentUseCase = new DeleteCommentUseCase({
+            commentRepository: mockCommentRepository,
+            threadRepository: mockThreadRepository,
+        });
+
+        // Action & Assert
+        await expect(
+            deleteCommentUseCase.execute(useCasePayload, owner),
+        ).rejects.toThrowError(NotFoundError);
+
+        expect(
+            mockCommentRepository.verifyCommentExists,
+        ).toBeCalledWith(useCasePayload);
+    });
 });

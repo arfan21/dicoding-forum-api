@@ -1,3 +1,4 @@
+const InvariantError = require('../../../Commons/exceptions/InvariantError');
 const Comment = require('../../comments/entities/Comment');
 
 class Thread {
@@ -48,7 +49,9 @@ class Thread {
             !payload.username ||
             !payload.comments
         ) {
-            throw new Error('THREAD.NOT_CONTAIN_NEEDED_PROPERTY');
+            throw new InvariantError(
+                'THREAD.NOT_CONTAIN_NEEDED_PROPERTY',
+            );
         }
 
         if (
@@ -59,7 +62,7 @@ class Thread {
             typeof payload.username !== 'string' ||
             !Array.isArray(payload.comments)
         ) {
-            throw new Error(
+            throw new InvariantError(
                 'THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION',
             );
         }

@@ -1,3 +1,5 @@
+const InvariantError = require('../../../Commons/exceptions/InvariantError');
+
 class CreatedThread {
     /**
      *
@@ -22,7 +24,7 @@ class CreatedThread {
      */
     _verifyPayload(payload) {
         if (!payload.id || !payload.title || !payload.owner) {
-            throw new Error(
+            throw new InvariantError(
                 'CREATED_THREAD.NOT_CONTAIN_NEEDED_PROPERTY',
             );
         }
@@ -32,7 +34,7 @@ class CreatedThread {
             typeof payload.title !== 'string' ||
             typeof payload.owner !== 'string'
         ) {
-            throw new Error(
+            throw new InvariantError(
                 'CREATED_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION',
             );
         }

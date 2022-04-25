@@ -20,6 +20,7 @@ class AddCommentUseCase {
      * @param {string} payload.thread
      * @param {string} payload.content
      * @param {string} payload.owner
+     * @param {string | null} payload.reply_to
      * @returns {Promise<CreatedComment>} createdComment
      * @throws {NotFoundError}
      */
@@ -28,7 +29,14 @@ class AddCommentUseCase {
             content: payload.content,
             owner: payload.owner,
             thread: payload.thread,
+            reply_to: payload.reply_to,
         });
+
+        if (payload.reply_to) {
+            await this._commentRepository.verifyCommentExists(
+                payload.reply_to,
+            );
+        }
 
         await this._threadRepository.verifyThreadExists(
             payload.thread,
