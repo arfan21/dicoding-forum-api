@@ -12,14 +12,6 @@ class CommentRepository {
     }
 
     /**
-     * @param {NewComment} comment
-     * @returns {Promise<CreatedComment>} createdComment
-     */
-    async addReply(comment) {
-        throw new Error('COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED');
-    }
-
-    /**
      * @param {string} id
      * @returns {Promise<void>}
      */
