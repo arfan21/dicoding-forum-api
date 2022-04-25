@@ -1,3 +1,4 @@
+const { Pool } = require('pg');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const CreatedThread = require('../../Domains/threads/entities/CreatedThread');
 const Thread = require('../../Domains/threads/entities/Thread');
@@ -6,7 +7,8 @@ const ThreadRepository = require('../../Domains/threads/ThreadRepository');
 class ThreadRepositoryPostgres extends ThreadRepository {
     /**
      *
-     * @inheritdoc
+     * @param {Pool} pool
+     * @param {() => string} idGenerator
      */
     constructor(pool, idGenerator) {
         super();
@@ -16,7 +18,8 @@ class ThreadRepositoryPostgres extends ThreadRepository {
 
     /**
      *
-     * @inheritdoc
+     * @param {NewThread} thread
+     * @returns {Promise<CreatedThread>} createdThread
      */
     async addThread(newThread) {
         const id = `thread-${this._idGenerator()}`;
@@ -33,7 +36,8 @@ class ThreadRepositoryPostgres extends ThreadRepository {
 
     /**
      *
-     * @inheritdoc
+     * @param {string} id
+     * @returns {Promise<Thread>} thread
      * @throws {NotFoundError} if thread is not found
      */
     async findThreadById(id) {
