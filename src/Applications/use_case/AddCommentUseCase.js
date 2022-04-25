@@ -1,15 +1,18 @@
 const CommentRepository = require('../../Domains/comments/CommentRepository');
 const CreatedComment = require('../../Domains/comments/entities/CreatedComment');
 const NewComment = require('../../Domains/comments/entities/NewComment');
+const ThreadRepository = require('../../Domains/threads/ThreadRepository');
 
 class AddCommentUseCase {
     /**
      *
      * @param {Object} dependencies - dependencies of use case
      * @param {CommentRepository} dependencies.commentRepository - comment repository
+     * @param {ThreadRepository} dependencies.threadRepository - thread repository
      */
-    constructor({ commentRepository }) {
+    constructor({ commentRepository, threadRepository }) {
         this._commentRepository = commentRepository;
+        this._threadRepository = threadRepository;
     }
 
     /**
@@ -18,6 +21,7 @@ class AddCommentUseCase {
      * @param {string} payload.content
      * @param {string} payload.owner
      * @returns {Promise<CreatedComment>} createdComment
+     * @throws {NotFoundError}
      */
     async execute(payload) {
         const newComment = new NewComment({
@@ -25,6 +29,10 @@ class AddCommentUseCase {
             owner: payload.owner,
             thread: payload.thread,
         });
+
+        await this._threadRepository.verifyThreadExists(
+            payload.thread,
+        );
 
         const createdComment =
             await this._commentRepository.addComment(newComment);
