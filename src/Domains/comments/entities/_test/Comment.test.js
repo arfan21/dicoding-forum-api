@@ -106,19 +106,20 @@ describe('Comment entities', () => {
 
     it('should create Comment object correctly with replies', () => {
         // Arrange
+        const dateReply = new Date();
         const payload = {
             id: 'id',
             content: 'content',
             date: new Date(),
             username: 'username',
             replies: [
-                new Comment({
+                {
                     id: 'id-reply',
                     content: 'content-reply',
-                    date: new Date(),
+                    date: dateReply,
                     username: 'username-reply',
                     replies: [],
-                }),
+                },
             ],
         };
 
@@ -133,6 +134,58 @@ describe('Comment entities', () => {
         expect(date).toEqual(payload.date);
         expect(username).toEqual(payload.username);
         expect(replies).toHaveLength(1);
-        expect(replies[0]).toStrictEqual(payload.replies[0]);
+        expect(replies[0]).toStrictEqual(
+            new Comment({
+                id: 'id-reply',
+                content: 'content-reply',
+                date: dateReply,
+                username: 'username-reply',
+                replies: [],
+            }),
+        );
+    });
+
+    it('should create Comment when comment and reply deleted', () => {
+        // Arrange
+        const dateReply = new Date();
+        const payload = {
+            id: 'id',
+            content: 'content',
+            date: new Date(),
+            username: 'username',
+            deleted_at: new Date(),
+            replies: [
+                {
+                    id: 'id-reply',
+                    content: 'content-reply',
+                    date: dateReply,
+                    username: 'username-reply',
+                    deleted_at: dateReply,
+                    reply_to: 'id',
+                    replies: [],
+                },
+            ],
+        };
+
+        // Action
+        const { id, content, date, username, replies } = new Comment(
+            payload,
+        );
+
+        // Assert
+        expect(id).toEqual(payload.id);
+        expect(content).toEqual('**komentar telah dihapus**');
+        expect(date).toEqual(payload.date);
+        expect(username).toEqual(payload.username);
+        expect(replies).toHaveLength(1);
+        expect(replies[0]).toStrictEqual(
+            new Comment({
+                id: 'id-reply',
+                content: '**balasan telah dihapus**',
+                date: dateReply,
+                username: 'username-reply',
+                replies: [],
+            }),
+        );
     });
 });

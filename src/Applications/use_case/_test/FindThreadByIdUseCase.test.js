@@ -39,37 +39,35 @@ describe('FindThreadByIdUseCase', () => {
         const mockThreadRepository = new ThreadRepository();
 
         /** mocking needed function */
-        mockThreadRepository.findThreadById = jest
-            .fn()
-            .mockImplementation(() =>
-                Promise.resolve(
-                    new Thread({
-                        id: 'thread-123',
-                        title: 'Dicoding Indonesia',
-                        body: 'Dicoding Indonesia adalah sebuah platform untuk belajar',
-                        date: dateStub,
-                        username: 'user-123',
-                        comments: [
-                            new Comment({
-                                id: 'comment-123',
-                                content:
-                                    'Dicoding Indonesia adalah sebuah platform untuk belajar',
-                                date: dateStub,
-                                username: 'user-123',
-                                replies: [
-                                    new Comment({
-                                        id: 'reply-123',
-                                        content:
-                                            'Dicoding Indonesia adalah sebuah platform untuk belajar',
-                                        date: dateStub,
-                                        username: 'user-123',
-                                    }),
-                                ],
-                            }),
-                        ],
-                    }),
-                ),
-            );
+        mockThreadRepository.findThreadById = jest.fn(() =>
+            Promise.resolve(
+                new Thread({
+                    id: 'thread-123',
+                    title: 'Dicoding Indonesia',
+                    body: 'Dicoding Indonesia adalah sebuah platform untuk belajar',
+                    date: dateStub,
+                    username: 'user-123',
+                    comments: [
+                        new Comment({
+                            id: 'comment-123',
+                            content:
+                                'Dicoding Indonesia adalah sebuah platform untuk belajar',
+                            date: dateStub,
+                            username: 'user-123',
+                            replies: [
+                                new Comment({
+                                    id: 'reply-123',
+                                    content:
+                                        'Dicoding Indonesia adalah sebuah platform untuk belajar',
+                                    date: dateStub,
+                                    username: 'user-123',
+                                }),
+                            ],
+                        }),
+                    ],
+                }),
+            ),
+        );
 
         /** creating use case instance */
         const getThreadUseCase = new FindThreadByIdUseCase({
@@ -94,10 +92,9 @@ describe('FindThreadByIdUseCase', () => {
         const mockThreadRepository = new ThreadRepository();
 
         /** mocking needed function */
-        mockThreadRepository.findThreadById = jest
-
-            .fn()
-            .mockImplementation(() => Promise.reject(expectedError));
+        mockThreadRepository.findThreadById = jest.fn(() =>
+            Promise.reject(expectedError),
+        );
 
         /** creating use case instance */
         const getThreadUseCase = new FindThreadByIdUseCase({

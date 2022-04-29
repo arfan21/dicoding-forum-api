@@ -47,14 +47,12 @@ class ThreadRepositoryPostgres extends ThreadRepository {
                     coalesce(json_agg(comments.* ORDER BY comments.date ASC) filter (where comments.id is not null) , '[]') as comments 
                 FROM threads JOIN users ON users.id = threads.owner 
                 LEFT JOIN (
-                    SELECT comments.*, 
-                    CASE WHEN comments.deleted_at IS NOT NULL THEN '**komentar telah dihapus**' ELSE comments.content END as content,
+                    SELECT comments.*,
                     coalesce(json_agg(replies.* ORDER BY replies.date ASC) filter (where replies.id is not null) , '[]')  as replies, users.username  
                     FROM comments 
                     JOIN users ON users.id = comments.owner
                     LEFT JOIN (
                         SELECT comments.*, 
-                        CASE WHEN comments.deleted_at IS NOT NULL THEN '**balasan telah dihapus**' ELSE comments.content END as content,
                         users.username FROM comments 
                         JOIN users ON users.id = comments.owner
                         WHERE comments.reply_to IS NOT NULL ORDER BY comments.date ASC

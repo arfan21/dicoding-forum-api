@@ -7,12 +7,22 @@ class Comment {
      * @param {string} payload.content
      * @param {Date} payload.date
      * @param {string} payload.username
+     * @param {Date | null} payload.deleted_at
+     * @param {string | null} payload.reply_to
      * @param {Comment[] | undefined} payload.replies
      */
     constructor(payload) {
         this._verifyPayload(payload);
         this.id = payload.id;
-        this.content = payload.content;
+
+        if (payload.deleted_at && payload.reply_to) {
+            this.content = '**balasan telah dihapus**';
+        } else if (payload.deleted_at && !payload.reply_to) {
+            this.content = '**komentar telah dihapus**';
+        } else {
+            this.content = payload.content;
+        }
+
         this.date = new Date(payload.date);
         this.username = payload.username;
         if (payload?.replies && payload?.replies?.length > 0)

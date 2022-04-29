@@ -14,28 +14,26 @@ describe('DeleteCommentUseCase', () => {
         const mockThreadRepository = new ThreadRepository();
 
         /** mocking needed function */
-        mockCommentRepository.deleteComment = jest
-            .fn()
-            .mockImplementation(() => Promise.resolve());
+        mockCommentRepository.deleteComment = jest.fn(() =>
+            Promise.resolve(),
+        );
 
-        mockCommentRepository.verifyCommentExists = jest
-            .fn()
-            .mockImplementation(() =>
-                Promise.resolve({
-                    id: 'comment-123',
-                    thread: 'thread-123',
-                    content:
-                        'Dicoding Indonesia adalah sebuah platform untuk belajar',
-                    owner: 'user-123',
-                    reply_to: null,
-                    deleted_at: null,
-                    date: new Date(),
-                }),
-            );
+        mockCommentRepository.verifyCommentExists = jest.fn(() =>
+            Promise.resolve({
+                id: 'comment-123',
+                thread: 'thread-123',
+                content:
+                    'Dicoding Indonesia adalah sebuah platform untuk belajar',
+                owner: 'user-123',
+                reply_to: null,
+                deleted_at: null,
+                date: new Date(),
+            }),
+        );
 
-        mockThreadRepository.verifyThreadExists = jest
-            .fn()
-            .mockImplementation(() => Promise.resolve());
+        mockThreadRepository.verifyThreadExists = jest.fn(() =>
+            Promise.resolve(),
+        );
 
         /** creating use case instance */
         const deleteCommentUseCase = new DeleteCommentUseCase({
@@ -66,16 +64,12 @@ describe('DeleteCommentUseCase', () => {
         const mockCommentRepository = new CommentRepository();
 
         /** mocking needed function */
-        mockCommentRepository.deleteComment = jest
-            .fn()
-            .mockImplementation(() =>
-                Promise.reject(new NotFoundError('Not found')),
-            );
-        mockCommentRepository.verifyCommentExists = jest
-            .fn()
-            .mockImplementation(() =>
-                Promise.reject(new NotFoundError('Not found')),
-            );
+        mockCommentRepository.deleteComment = jest.fn(() =>
+            Promise.reject(new NotFoundError('Not found')),
+        );
+        mockCommentRepository.verifyCommentExists = jest.fn(() =>
+            Promise.reject(new NotFoundError('Not found')),
+        );
 
         /** creating use case instance */
         const deleteCommentUseCase = new DeleteCommentUseCase({
@@ -100,24 +94,22 @@ describe('DeleteCommentUseCase', () => {
         const mockThreadRepository = new ThreadRepository();
 
         /** mocking needed function */
-        mockCommentRepository.deleteComment = jest
-            .fn()
-            .mockImplementation(() => Promise.resolve());
+        mockCommentRepository.deleteComment = jest.fn(() =>
+            Promise.resolve(),
+        );
 
-        mockCommentRepository.verifyCommentExists = jest
-            .fn()
-            .mockImplementation(() =>
-                Promise.resolve({
-                    id: 'comment-123',
-                    thread: 'thread-123',
-                    content:
-                        'Dicoding Indonesia adalah sebuah platform untuk belajar',
-                    owner: 'user-123',
-                    reply_to: null,
-                    deleted_at: null,
-                    date: new Date(),
-                }),
-            );
+        mockCommentRepository.verifyCommentExists = jest.fn(() =>
+            Promise.resolve({
+                id: 'comment-123',
+                thread: 'thread-123',
+                content:
+                    'Dicoding Indonesia adalah sebuah platform untuk belajar',
+                owner: 'user-123',
+                reply_to: null,
+                deleted_at: null,
+                date: new Date(),
+            }),
+        );
 
         /** creating use case instance */
         const deleteCommentUseCase = new DeleteCommentUseCase({
@@ -210,15 +202,13 @@ describe('DeleteCommentUseCase', () => {
         const mockThreadRepository = new ThreadRepository();
 
         /** mocking needed function */
-        mockCommentRepository.deleteComment = jest
-            .fn()
-            .mockImplementation(() => Promise.resolve());
+        mockCommentRepository.deleteComment = jest.fn(() =>
+            Promise.resolve(),
+        );
 
-        mockCommentRepository.verifyCommentExists = jest
-            .fn()
-            .mockImplementation(() =>
-                Promise.reject(new NotFoundError('Not found')),
-            );
+        mockCommentRepository.verifyCommentExists = jest.fn(() =>
+            Promise.reject(new NotFoundError('Not found')),
+        );
 
         /** creating use case instance */
         const deleteCommentUseCase = new DeleteCommentUseCase({

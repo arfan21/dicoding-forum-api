@@ -28,23 +28,21 @@ describe('AddCommentUseCase', () => {
         const mockThreadRepository = new ThreadRepository();
 
         /** mocking needed function */
-        mockCommentRepository.addComment = jest
-            .fn()
-            .mockImplementation(() =>
-                Promise.resolve(
-                    new CreatedComment({
-                        id: 'comment-123',
-                        thread: 'thread-123',
-                        content:
-                            'Dicoding Indonesia adalah sebuah platform untuk belajar',
-                        owner: 'user-123',
-                    }),
-                ),
-            );
+        mockCommentRepository.addComment = jest.fn(() =>
+            Promise.resolve(
+                new CreatedComment({
+                    id: 'comment-123',
+                    thread: 'thread-123',
+                    content:
+                        'Dicoding Indonesia adalah sebuah platform untuk belajar',
+                    owner: 'user-123',
+                }),
+            ),
+        );
 
-        mockThreadRepository.verifyThreadExists = jest
-            .fn()
-            .mockImplementation(() => Promise.resolve());
+        mockThreadRepository.verifyThreadExists = jest.fn(() =>
+            Promise.resolve(),
+        );
 
         /** creating use case instance */
         const addCommentUseCase = new AddCommentUseCase({
