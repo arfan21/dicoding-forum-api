@@ -49,7 +49,7 @@ jobs:
             - name: Run tests
               run: yarn test
               env:
-                  PGHOST_TEST: postgres
+                  PGHOST_TEST: localhost
                   PGUSER_TEST: postgres
                   PGDATABASE_TEST: forumapi_test
                   PGPASSWORD_TEST: postgres
