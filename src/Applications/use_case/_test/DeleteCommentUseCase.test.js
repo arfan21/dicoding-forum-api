@@ -146,7 +146,7 @@ describe('DeleteCommentUseCase', () => {
                     id: 'reply-123',
                     thread: 'thread-123',
                     content: 'asd',
-                    owner: owner,
+                    owner,
                     reply_to: 'comment-123',
                     deleted_at: null,
                     date: new Date(),

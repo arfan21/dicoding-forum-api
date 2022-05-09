@@ -1,4 +1,5 @@
 const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
+const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const CommentRepository = require('../../Domains/comments/CommentRepository');
 const ThreadRepository = require('../../Domains/threads/ThreadRepository');
 

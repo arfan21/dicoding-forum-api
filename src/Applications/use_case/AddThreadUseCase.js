@@ -1,5 +1,6 @@
 const CreatedThread = require('../../Domains/threads/entities/CreatedThread');
 const NewThread = require('../../Domains/threads/entities/NewThread');
+const ThreadRepository = require('../../Domains/threads/ThreadRepository');
 
 class AddThreadUseCase {
     /**

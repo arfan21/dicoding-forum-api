@@ -1,17 +1,30 @@
 {
     "env": {
         "es2021": true,
-        "node": true
+        "node": true,
+        "jest": true
     },
     "extends": ["airbnb-base", "prettier"],
-    "plugins": ["prettier"],
+    "plugins": ["prettier", "jsdoc", "jest"],
     "parserOptions": {
         "ecmaVersion": 2020
     },
     "rules": {
-        "allowAfterThisConstructor": true,
         "no-console": "off",
-        "indent": ["error", 4],
-        "prettier/prettier": ["error"]
+        "prettier/prettier": ["error"],
+        "no-underscore-dangle": [
+            "error",
+            {
+                "allowAfterThis": true,
+                "allowAfterThisConstructor": true
+            }
+        ],
+        "class-methods-use-this": "off",
+        "jsdoc/no-undefined-types": 1,
+        "jest/no-disabled-tests": "warn",
+        "jest/no-focused-tests": "error",
+        "jest/no-identical-title": "error",
+        "jest/prefer-to-have-length": "warn",
+        "jest/valid-expect": "error"
     }
 }

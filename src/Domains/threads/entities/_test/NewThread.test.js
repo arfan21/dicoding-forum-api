@@ -1,39 +1,39 @@
-const NewThread = require("../NewThread");
+const NewThread = require('../NewThread');
 
-describe("NewThread entities", () => {
-    it("should throw error when payload not contain needed property", () => {
+describe('NewThread entities', () => {
+    it('should throw error when payload not contain needed property', () => {
         // Arrange
         const payload = {
-            title: "title",
-            body: "body",
+            title: 'title',
+            body: 'body',
         };
 
         // Action & Assert
         expect(() => new NewThread(payload)).toThrowError(
-            "NEW_THREAD.NOT_CONTAIN_NEEDED_PROPERTY"
+            'NEW_THREAD.NOT_CONTAIN_NEEDED_PROPERTY',
         );
     });
 
-    it("should throw error when payload not meet data type specification", () => {
+    it('should throw error when payload not meet data type specification', () => {
         // Arrange
         const payload = {
-            title: "title",
+            title: 'title',
             body: 1234,
-            owner: "owner",
+            owner: 'owner',
         };
 
         // Action & Assert
         expect(() => new NewThread(payload)).toThrowError(
-            "NEW_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION"
+            'NEW_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
 
-    it("should create newThread object correctly", () => {
+    it('should create newThread object correctly', () => {
         // Arrange
         const payload = {
-            title: "title",
-            body: "body",
-            owner: "owner",
+            title: 'title',
+            body: 'body',
+            owner: 'owner',
         };
 
         // Action

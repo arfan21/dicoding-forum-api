@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const NewComment = require('../NewComment');
 
 describe('NewComment', () => {

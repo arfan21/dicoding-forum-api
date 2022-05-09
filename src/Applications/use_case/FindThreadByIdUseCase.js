@@ -1,3 +1,4 @@
+const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const Thread = require('../../Domains/threads/entities/Thread');
 const ThreadRepository = require('../../Domains/threads/ThreadRepository');
 
@@ -18,7 +19,7 @@ class FindThreadByIdUseCase {
      * @throws {NotFoundError} - if thread not found
      */
     async execute(id) {
-        return await this._threadRepository.findThreadById(id);
+        return this._threadRepository.findThreadById(id);
     }
 }
 
