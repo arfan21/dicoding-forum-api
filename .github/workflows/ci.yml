@@ -54,3 +54,8 @@ jobs:
                   PGDATABASE_TEST: forumapi_test
                   PGPASSWORD_TEST: postgres
                   PGPORT_TEST: 5432
+                  ACCESS_TOKEN_KEY: haha
+                  REFRESH_TOKEN_KEY: hehe
+                  ACCCESS_TOKEN_AGE: 3000
+                  HOST: localhost
+                  PORT: 5000
