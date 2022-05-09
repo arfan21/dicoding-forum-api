@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const CreatedThread = require('./entities/CreatedThread');
 const NewThread = require('./entities/NewThread');
 const Thread = require('./entities/Thread');

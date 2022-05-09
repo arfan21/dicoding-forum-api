@@ -9,6 +9,12 @@ class CommentsHandler {
      */
     constructor(container) {
         this._container = container;
+
+        this.postCommentHandler = this.postCommentHandler.bind(this);
+        this.postReplyHandler = this.postReplyHandler.bind(this);
+        this.deleteCommentHandler =
+            this.deleteCommentHandler.bind(this);
+        this.deleteReplyHandler = this.deleteReplyHandler.bind(this);
     }
 
     /**
@@ -16,7 +22,7 @@ class CommentsHandler {
      * @param {import('@hapi/hapi').Request} request
      * @param {import('@hapi/hapi').ResponseToolkit} h
      */
-    postCommentHandler = async (request, h) => {
+    async postCommentHandler(request, h) {
         const { id } = request.params;
 
         /**
@@ -41,14 +47,14 @@ class CommentsHandler {
 
         response.code(201);
         return response;
-    };
+    }
 
     /**
      *
      * @param {import('@hapi/hapi').Request} request
      * @param {import('@hapi/hapi').ResponseToolkit} h
      */
-    postReplyHandler = async (request, h) => {
+    async postReplyHandler(request, h) {
         const { threadId, commentId } = request.params;
 
         /**
@@ -74,14 +80,14 @@ class CommentsHandler {
 
         response.code(201);
         return response;
-    };
+    }
 
     /**
      *
      * @param {import('@hapi/hapi').Request} request
      * @param {import('@hapi/hapi').ResponseToolkit} h
      */
-    deleteCommentHandler = async (request, h) => {
+    async deleteCommentHandler(request, h) {
         const { commentId } = request.params;
 
         /**
@@ -102,14 +108,14 @@ class CommentsHandler {
 
         response.code(200);
         return response;
-    };
+    }
 
     /**
      *
      * @param {import('@hapi/hapi').Request} request
      * @param {import('@hapi/hapi').ResponseToolkit} h
      */
-    deleteReplyHandler = async (request, h) => {
+    async deleteReplyHandler(request, h) {
         const { replyId } = request.params;
 
         /**
@@ -130,7 +136,7 @@ class CommentsHandler {
 
         response.code(200);
         return response;
-    };
+    }
 }
 
 module.exports = CommentsHandler;

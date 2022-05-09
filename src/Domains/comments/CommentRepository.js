@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const Comment = require('./entities/Comment');
 const CreatedComment = require('./entities/CreatedComment');
 const NewComment = require('./entities/NewComment');

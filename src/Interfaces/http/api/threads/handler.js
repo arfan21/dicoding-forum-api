@@ -9,6 +9,10 @@ class ThreadsHandler {
      */
     constructor(container) {
         this._container = container;
+
+        this.postThreadHandler = this.postThreadHandler.bind(this);
+        this.findThreadByIdHandler =
+            this.findThreadByIdHandler.bind(this);
     }
 
     /**
@@ -16,7 +20,7 @@ class ThreadsHandler {
      * @param {import('@hapi/hapi').Request} request
      * @param {import('@hapi/hapi').ResponseToolkit} h
      */
-    postThreadHandler = async (request, h) => {
+    async postThreadHandler(request, h) {
         /**
          * @type {AddThreadUseCase}
          */
@@ -38,14 +42,14 @@ class ThreadsHandler {
 
         response.code(201);
         return response;
-    };
+    }
 
     /**
      *
      * @param {import('@hapi/hapi').Request} request
      * @param {import('@hapi/hapi').ResponseToolkit} h
      */
-    findThreadByIdHandler = async (request, h) => {
+    async findThreadByIdHandler(request, h) {
         const { id } = request.params;
 
         /**
@@ -65,7 +69,7 @@ class ThreadsHandler {
 
         response.code(200);
         return response;
-    };
+    }
 }
 
 module.exports = ThreadsHandler;

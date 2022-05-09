@@ -1,6 +1,7 @@
 const { Pool } = require('pg');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const CreatedThread = require('../../Domains/threads/entities/CreatedThread');
+const NewThread = require('../../Domains/threads/entities/NewThread');
 const Thread = require('../../Domains/threads/entities/Thread');
 const ThreadRepository = require('../../Domains/threads/ThreadRepository');
 
@@ -89,8 +90,6 @@ class ThreadRepositoryPostgres extends ThreadRepository {
         if (!result.rowCount) {
             throw new NotFoundError('thread tidak ditemukan');
         }
-
-        return;
     }
 }
 

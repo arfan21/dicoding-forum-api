@@ -26,11 +26,9 @@ class Comment {
         this.date = new Date(payload.date);
         this.username = payload.username;
         if (payload?.replies && payload?.replies?.length > 0)
-            this.replies = payload.replies.map((value) => {
-                return new Comment({
-                    ...value,
-                });
-            });
+            this.replies = payload.replies.map(
+                (value) => new Comment(value),
+            );
     }
 
     /**
@@ -56,7 +54,6 @@ class Comment {
         if (
             typeof payload.id !== 'string' ||
             typeof payload.content !== 'string' ||
-            !payload instanceof Date ||
             typeof payload.username !== 'string'
         ) {
             throw new InvariantError(

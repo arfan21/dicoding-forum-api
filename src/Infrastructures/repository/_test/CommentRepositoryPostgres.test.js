@@ -2,7 +2,6 @@ const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelp
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
-const Comment = require('../../../Domains/comments/entities/Comment');
 const CreatedComment = require('../../../Domains/comments/entities/CreatedComment');
 const NewComment = require('../../../Domains/comments/entities/NewComment');
 const pool = require('../../database/postgres/pool');

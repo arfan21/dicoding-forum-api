@@ -21,12 +21,7 @@ class Thread {
         this.username = payload.username;
         this.comments =
             payload.comments.length > 0
-                ? payload.comments.map(
-                      (value) =>
-                          new Comment({
-                              ...value,
-                          }),
-                  )
+                ? payload.comments.map((value) => new Comment(value))
                 : [];
     }
 
@@ -58,7 +53,7 @@ class Thread {
             typeof payload.id !== 'string' ||
             typeof payload.title !== 'string' ||
             typeof payload.body !== 'string' ||
-            !payload.date instanceof Date ||
+            !(payload.date instanceof Date) ||
             typeof payload.username !== 'string' ||
             !Array.isArray(payload.comments)
         ) {

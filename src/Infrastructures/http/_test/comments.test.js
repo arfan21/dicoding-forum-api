@@ -401,7 +401,6 @@ describe('/threads/{id}/comments endpoint', () => {
             });
 
             // Assert
-            const responseJson = JSON.parse(response.payload);
             expect(response.statusCode).toEqual(401);
         });
     });
@@ -527,7 +526,6 @@ describe('/threads/{id}/comments endpoint', () => {
             });
 
             // Assert
-            const responseJson = JSON.parse(response.payload);
             expect(response.statusCode).toEqual(401);
         });
     });

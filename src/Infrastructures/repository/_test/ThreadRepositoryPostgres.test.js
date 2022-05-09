@@ -152,7 +152,6 @@ describe('ThreadRepositoryPostgres', () => {
             const thread = await threadRepository.findThreadById(
                 'thread-123',
             );
-
             // Assert
             expect(thread).toStrictEqual(
                 new Thread({
