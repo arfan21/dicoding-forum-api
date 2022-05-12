@@ -11,7 +11,7 @@
         "test:watch": "jest --watchAll --coverage --setupFiles dotenv/config -i",
         "migrate": "node-pg-migrate",
         "migrate:test": "node-pg-migrate -f config/database/test.json",
-        "build": "PGSSLMODE=require node-pg-migrate up"
+        "build": "PGSSLMODE=prefer NODE_TLS_REJECT_UNAUTHORIZED=0 node-pg-migrate up"
     },
     "keywords": [],
     "author": "",
