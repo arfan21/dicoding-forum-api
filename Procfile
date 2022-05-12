@@ -1,1 +1,1 @@
-web: npm start
+web: PGSSLMODE=prefer NODE_TLS_REJECT_UNAUTHORIZED=0 npm start
