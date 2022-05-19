@@ -54,4 +54,18 @@ describe('/threads/{threadId}/comments/{commentId}/likes endpoint', () => {
         expect(response.statusCode).toEqual(200);
         expect(responseJson.status).toEqual('success');
     });
+
+    it('should response 401 when access token not provided', async () => {
+        // Arrange
+        const server = await createServer(container);
+
+        // Action
+        const response = await server.inject({
+            method: 'PUT',
+            url: '/threads/thread-123/comments/comment-123/likes',
+        });
+
+        // Assert
+        expect(response.statusCode).toEqual(401);
+    });
 });

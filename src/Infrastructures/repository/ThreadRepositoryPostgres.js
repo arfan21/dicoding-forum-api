@@ -42,23 +42,33 @@ class ThreadRepositoryPostgres extends ThreadRepository {
      * @throws {NotFoundError} if thread is not found
      */
     async findThreadById(id) {
+        const queryJoinReply = `
+            SELECT comments.*,
+                (SELECT COUNT(*) FROM likes WHERE likes.comment = comments.id) AS "likeCount", 
+                users.username FROM comments 
+                JOIN users ON users.id = comments.owner
+            WHERE comments.reply_to IS NOT NULL ORDER BY comments.date ASC
+        `;
+
+        const queryJoinComment = `
+            SELECT comments.*,
+                (SELECT COUNT(*) FROM likes WHERE likes.comment = comments.id) AS "likeCount",
+                coalesce(json_agg(replies.* ORDER BY replies.date ASC) filter (where replies.id is not null) , '[]')  as replies, users.username  
+                FROM comments 
+                JOIN users ON users.id = comments.owner
+                LEFT JOIN (
+                    ${queryJoinReply}
+                ) replies ON replies.reply_to = comments.id
+            GROUP BY comments.id, users.username ORDER BY comments.date ASC
+        `;
+
         const query = {
             text: `
                 SELECT threads.*, users.username,
                     coalesce(json_agg(comments.* ORDER BY comments.date ASC) filter (where comments.id is not null) , '[]') as comments 
                 FROM threads JOIN users ON users.id = threads.owner 
                 LEFT JOIN (
-                    SELECT comments.*,
-                    coalesce(json_agg(replies.* ORDER BY replies.date ASC) filter (where replies.id is not null) , '[]')  as replies, users.username  
-                    FROM comments 
-                    JOIN users ON users.id = comments.owner
-                    LEFT JOIN (
-                        SELECT comments.*, 
-                        users.username FROM comments 
-                        JOIN users ON users.id = comments.owner
-                        WHERE comments.reply_to IS NOT NULL ORDER BY comments.date ASC
-                    ) replies ON replies.reply_to = comments.id
-                    GROUP BY comments.id, users.username ORDER BY comments.date ASC
+                    ${queryJoinComment}
                 ) comments ON comments.thread = threads.id AND comments.reply_to IS NULL
                 WHERE threads.id = $1 GROUP BY threads.id, users.username `,
             values: [id],
