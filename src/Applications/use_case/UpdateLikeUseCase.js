@@ -1,5 +1,7 @@
+const CommentRepository = require('../../Domains/comments/CommentRepository');
 const NewLike = require('../../Domains/likes/entities/NewLike');
 const LikeRepository = require('../../Domains/likes/LikeRepository');
+const ThreadRepository = require('../../Domains/threads/ThreadRepository');
 
 class UpdateLikeUseCase {
     /**

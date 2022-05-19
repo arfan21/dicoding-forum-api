@@ -1,7 +1,7 @@
 const InvariantError = require('../../../Commons/exceptions/InvariantError');
 
 class NewLike {
-    /***
+    /** *
      * @param {object} payload
      * @param {string} payload.thread
      * @param {string} payload.owner

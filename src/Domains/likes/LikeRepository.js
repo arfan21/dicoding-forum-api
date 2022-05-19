@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 const NewLike = require('./entities/NewLike');
+const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 
 class LikeRepository {
     /**
