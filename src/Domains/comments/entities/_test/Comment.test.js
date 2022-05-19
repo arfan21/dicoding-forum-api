@@ -38,13 +38,13 @@ describe('Comment entities', () => {
             content: 'content',
             date: new Date(),
             username: 'username',
+            likeCount: 2,
             replies: [],
         };
 
         // Action
-        const { id, content, date, username, replies } = new Comment(
-            payload,
-        );
+        const { id, content, date, username, replies, likeCount } =
+            new Comment(payload);
 
         // Assert
         expect(id).toEqual(payload.id);
@@ -52,6 +52,7 @@ describe('Comment entities', () => {
         expect(date).toEqual(payload.date);
         expect(username).toEqual(payload.username);
         expect(replies).toBeUndefined();
+        expect(likeCount).toEqual(payload.likeCount);
     });
 
     it('should missing key replies when replies null', () => {
@@ -187,5 +188,22 @@ describe('Comment entities', () => {
                 replies: [],
             }),
         );
+    });
+
+    it('likeCount should 0 when missing key likeCount', () => {
+        // Arrange
+        const payload = {
+            id: 'id',
+            content: 'content',
+            date: new Date(),
+            username: 'username',
+            replies: [],
+        };
+
+        // Action
+        const { likeCount } = new Comment(payload);
+
+        // Assert
+        expect(likeCount).toEqual(0);
     });
 });

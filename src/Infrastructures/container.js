@@ -31,6 +31,9 @@ const AddThreadUseCase = require('../Applications/use_case/AddThreadUseCase');
 const FindThreadByIdUseCase = require('../Applications/use_case/FindThreadByIdUseCase');
 const AddCommentUseCase = require('../Applications/use_case/AddCommentUseCase');
 const DeleteCommentUseCase = require('../Applications/use_case/DeleteCommentUseCase');
+const LikeRepository = require('../Domains/likes/LikeRepository');
+const LikeRepositoryPostgres = require('./repository/LikeRepositoryPostgres');
+const UpdateLikeUseCase = require('../Applications/use_case/UpdateLikeUseCase');
 
 // creating container
 const container = createContainer();
@@ -101,6 +104,20 @@ container.register([
     {
         key: CommentRepository.name,
         Class: CommentRepositoryPostgres,
+        parameter: {
+            dependencies: [
+                {
+                    concrete: pool,
+                },
+                {
+                    concrete: nanoid,
+                },
+            ],
+        },
+    },
+    {
+        key: LikeRepository.name,
+        Class: LikeRepositoryPostgres,
         parameter: {
             dependencies: [
                 {
@@ -237,6 +254,27 @@ container.register([
         parameter: {
             injectType: 'destructuring',
             dependencies: [
+                {
+                    name: 'commentRepository',
+                    internal: CommentRepository.name,
+                },
+                {
+                    name: 'threadRepository',
+                    internal: ThreadRepository.name,
+                },
+            ],
+        },
+    },
+    {
+        key: UpdateLikeUseCase.name,
+        Class: UpdateLikeUseCase,
+        parameter: {
+            injectType: 'destructuring',
+            dependencies: [
+                {
+                    name: 'likeRepository',
+                    internal: LikeRepository.name,
+                },
                 {
                     name: 'commentRepository',
                     internal: CommentRepository.name,

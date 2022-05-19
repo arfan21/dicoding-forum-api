@@ -1,4 +1,5 @@
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
+const LikesTableTestHelper = require('../../../../tests/LikesTableTestHelper');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
@@ -13,6 +14,8 @@ describe('ThreadRepositoryPostgres', () => {
     afterEach(async () => {
         await UsersTableTestHelper.cleanTable();
         await ThreadsTableTestHelper.cleanTable();
+        await CommentsTableTestHelper.cleanTable();
+        await LikesTableTestHelper.cleanTable();
     });
 
     afterAll(async () => {
@@ -331,6 +334,47 @@ describe('ThreadRepositoryPostgres', () => {
             await expect(
                 threadRepository.findThreadById('thread-123'),
             ).rejects.toThrowError(NotFoundError);
+        });
+
+        it('should return likeCount correctly', async () => {
+            await UsersTableTestHelper.addUser({
+                username: 'dicoding',
+                password: 'secret_password',
+            });
+
+            await ThreadsTableTestHelper.addThread({
+                title: 'title',
+                body: 'body',
+            });
+
+            await CommentsTableTestHelper.addComment({
+                content: 'content-comment',
+            });
+
+            await CommentsTableTestHelper.addComment({
+                id: 'comment-1234',
+                content: 'content-comment-reply',
+                reply_to: 'comment-123',
+            });
+
+            await LikesTableTestHelper.addLike({
+                comment: 'comment-123',
+                thread: 'thread-123',
+                owner: 'user-123',
+            });
+
+            const threadRepository = new ThreadRepositoryPostgres(
+                pool,
+                null,
+            );
+
+            // Action
+            const thread = await threadRepository.findThreadById(
+                'thread-123',
+            );
+
+            // Assert
+            expect(thread.comments[0].likeCount).toEqual(1);
         });
     });
 

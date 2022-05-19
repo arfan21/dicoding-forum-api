@@ -9,6 +9,7 @@ class Comment {
      * @param {string} payload.username
      * @param {Date | null} payload.deleted_at
      * @param {string | null} payload.reply_to
+     * @param {number} payload.likeCount
      * @param {Comment[] | undefined} payload.replies
      */
     constructor(payload) {
@@ -22,7 +23,7 @@ class Comment {
         } else {
             this.content = payload.content;
         }
-
+        this.likeCount = payload.likeCount ?? 0;
         this.date = new Date(payload.date);
         this.username = payload.username;
         if (payload?.replies && payload?.replies?.length > 0)
