@@ -14,7 +14,7 @@ const routes = (handler) => [
             auth: 'forumapi_jwt',
             plugins: {
                 rateLimit: {
-                    enabled: true,
+                    enabled: process.env.NODE_ENV !== 'test',
                 },
             },
         },

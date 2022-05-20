@@ -8,23 +8,9 @@ const authentications = require('../../Interfaces/http/api/authentications');
 const threads = require('../../Interfaces/http/api/threads');
 const comments = require('../../Interfaces/http/api/comments');
 const likes = require('../../Interfaces/http/api/likes');
-const TooManyRequestError = require('../../Commons/exceptions/TooManyRequestError');
-const redisClient = require('../database/redis/client');
+const rateLimitOptions = require('../rateLimitOptions');
 
-const addResponseHeaderRateLimit = (request, response) => {
-    const rate = request.plugins['hapi-rate-limiter']
-        ? request.plugins['hapi-rate-limiter'].rate
-        : null;
-    if (rate) {
-        response.header('X-Rate-Limit-Remaining', rate.remaining);
-        response.header('X-Rate-Limit-Limit', rate.limit);
-        response.header('X-Rate-Limit-Reset', rate.reset);
-        return response;
-    }
-    return response;
-};
-
-const createServer = async (container) => {
+const createServer = async (container, redisClient = null) => {
     const server = Hapi.server({
         host: process.env.HOST,
         port: process.env.PORT,
@@ -36,27 +22,12 @@ const createServer = async (container) => {
     });
 
     // setup rate limit using hapi-rate-limiter
-    // enable rate limit when not testing
-    if (process.env.NODE_ENV !== 'test') {
-        const defaultRate = {
-            limit: 90,
-            window: 60,
-        };
-
-        await server.register({
-            plugin: hapiRateLimit,
-            options: {
-                defaultRate: () => defaultRate,
-                key: (request) => request.auth.credentials?.id,
-                redisClient,
-                overLimitError: () =>
-                    new TooManyRequestError(
-                        'you have exceeded your request limit',
-                    ),
-                onRedisError: (err) => console.log(err),
-            },
-        });
-    }
+    await server.register({
+        plugin: hapiRateLimit,
+        options: {
+            ...rateLimitOptions(redisClient),
+        },
+    });
 
     await server.register([
         {
@@ -119,10 +90,7 @@ const createServer = async (container) => {
                     message: translatedError.message,
                 });
                 newResponse.code(translatedError.statusCode);
-                return addResponseHeaderRateLimit(
-                    request,
-                    newResponse,
-                );
+                return newResponse;
             }
 
             // mempertahankan penanganan client error oleh hapi secara native, seperti 404, etc.
@@ -136,7 +104,7 @@ const createServer = async (container) => {
                 message: 'terjadi kegagalan pada server kami',
             });
             newResponse.code(500);
-            return addResponseHeaderRateLimit(request, newResponse);
+            return newResponse;
         }
 
         // jika bukan error, lanjutkan dengan response sebelumnya (tanpa terintervensi)

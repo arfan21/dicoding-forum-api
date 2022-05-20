@@ -1,3 +1,6 @@
+const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
+const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
+const pool = require('../../database/postgres/pool');
 const createServer = require('../createServer');
 
 describe('HTTP server', () => {
@@ -38,5 +41,15 @@ describe('HTTP server', () => {
         expect(responseJson.message).toEqual(
             'terjadi kegagalan pada server kami',
         );
+    });
+
+    afterEach(async () => {
+        await UsersTableTestHelper.cleanTable();
+        await ThreadsTableTestHelper.cleanTable();
+    });
+
+    afterAll(async () => {
+        await pool.end();
+        process.env.NODE_ENV = 'test';
     });
 });

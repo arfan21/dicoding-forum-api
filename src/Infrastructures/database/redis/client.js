@@ -1,7 +1,8 @@
+/* istanbul ignore file */
 const Bluebird = require('bluebird');
 const Redis = require('redis');
 
-const redisClient = (() => {
+const redisClient = () => {
     Bluebird.promisifyAll(Redis.RedisClient.prototype);
     Bluebird.promisifyAll(Redis.Multi.prototype);
 
@@ -10,6 +11,6 @@ const redisClient = (() => {
     });
 
     return redis;
-})();
+};
 
 module.exports = redisClient;
