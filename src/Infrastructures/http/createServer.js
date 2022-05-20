@@ -9,6 +9,7 @@ const threads = require('../../Interfaces/http/api/threads');
 const comments = require('../../Interfaces/http/api/comments');
 const likes = require('../../Interfaces/http/api/likes');
 const rateLimitOptions = require('../rateLimitOptions');
+const addHeaderRateLimit = require('./addHeaderRateLimit');
 
 const createServer = async (container, redisClient = null) => {
     const server = Hapi.server({
@@ -90,7 +91,7 @@ const createServer = async (container, redisClient = null) => {
                     message: translatedError.message,
                 });
                 newResponse.code(translatedError.statusCode);
-                return newResponse;
+                return addHeaderRateLimit(request, newResponse);
             }
 
             // mempertahankan penanganan client error oleh hapi secara native, seperti 404, etc.
@@ -104,7 +105,7 @@ const createServer = async (container, redisClient = null) => {
                 message: 'terjadi kegagalan pada server kami',
             });
             newResponse.code(500);
-            return newResponse;
+            return addHeaderRateLimit(request, newResponse);
         }
 
         // jika bukan error, lanjutkan dengan response sebelumnya (tanpa terintervensi)
