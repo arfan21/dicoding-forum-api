@@ -1,5 +1,6 @@
 const Hapi = require('@hapi/hapi');
 const hapiAuthJwt = require('@hapi/jwt');
+const hapiRateLimit = require('hapi-rate-limiter');
 const ClientError = require('../../Commons/exceptions/ClientError');
 const DomainErrorTranslator = require('../../Commons/exceptions/DomainErrorTranslator');
 const users = require('../../Interfaces/http/api/users');
@@ -7,8 +8,9 @@ const authentications = require('../../Interfaces/http/api/authentications');
 const threads = require('../../Interfaces/http/api/threads');
 const comments = require('../../Interfaces/http/api/comments');
 const likes = require('../../Interfaces/http/api/likes');
+const rateLimitOptions = require('../rateLimitOptions');
 
-const createServer = async (container) => {
+const createServer = async (container, redisClient = null) => {
     const server = Hapi.server({
         host: process.env.HOST,
         port: process.env.PORT,
@@ -16,6 +18,14 @@ const createServer = async (container) => {
             cors: {
                 origin: ['*'],
             },
+        },
+    });
+
+    // setup rate limit using hapi-rate-limiter
+    await server.register({
+        plugin: hapiRateLimit,
+        options: {
+            ...rateLimitOptions(redisClient),
         },
     });
 

@@ -12,6 +12,11 @@ const routes = (handler) => [
         handler: handler.updateLikeHandler,
         options: {
             auth: 'forumapi_jwt',
+            plugins: {
+                rateLimit: {
+                    enabled: process.env.NODE_ENV !== 'test',
+                },
+            },
         },
     },
 ];

@@ -12,6 +12,11 @@ const routes = (handler) => [
         handler: handler.postCommentHandler,
         options: {
             auth: 'forumapi_jwt',
+            plugins: {
+                rateLimit: {
+                    enabled: process.env.NODE_ENV !== 'test',
+                },
+            },
         },
     },
     {
@@ -20,6 +25,11 @@ const routes = (handler) => [
         handler: handler.postReplyHandler,
         options: {
             auth: 'forumapi_jwt',
+            plugins: {
+                rateLimit: {
+                    enabled: process.env.NODE_ENV !== 'test',
+                },
+            },
         },
     },
     {
@@ -28,6 +38,11 @@ const routes = (handler) => [
         handler: handler.deleteCommentHandler,
         options: {
             auth: 'forumapi_jwt',
+            plugins: {
+                rateLimit: {
+                    enabled: process.env.NODE_ENV !== 'test',
+                },
+            },
         },
     },
     {
@@ -36,6 +51,11 @@ const routes = (handler) => [
         handler: handler.deleteReplyHandler,
         options: {
             auth: 'forumapi_jwt',
+            plugins: {
+                rateLimit: {
+                    enabled: process.env.NODE_ENV !== 'test',
+                },
+            },
         },
     },
 ];
