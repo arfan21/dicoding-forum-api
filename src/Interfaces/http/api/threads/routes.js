@@ -12,12 +12,24 @@ const routes = (handler) => [
         handler: handler.postThreadHandler,
         options: {
             auth: 'forumapi_jwt',
+            plugins: {
+                rateLimit: {
+                    enabled: true,
+                },
+            },
         },
     },
     {
         method: 'GET',
         path: '/threads/{id}',
         handler: handler.findThreadByIdHandler,
+        options: {
+            plugins: {
+                rateLimit: {
+                    enabled: true,
+                },
+            },
+        },
     },
 ];
 
